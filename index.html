@@ -2,237 +2,172 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Para o meu amor ❤️</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Karine Seixas ❤️</title>
 
 <style>
-body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:linear-gradient(135deg,#cce7ff,#eaf6ff);
-    text-align:center;
-    overflow-x:hidden;
-}
+    body {
+        margin: 0;
+        background: linear-gradient(to bottom, #0b1d3a, #000);
+        color: white;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        overflow: hidden;
+    }
 
-/* ❄️ NEVE */
-.snowflake{
-    position:fixed;
-    top:-10px;
-    color:white;
-    font-size:1em;
-    user-select:none;
-    pointer-events:none;
-    animation:fall linear infinite;
-}
+    h1 {
+        margin-top: 20px;
+    }
 
-@keyframes fall{
-    to{ transform:translateY(110vh); }
-}
+    #container {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+    }
 
-/* 💖 START */
-#start{
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background:linear-gradient(135deg,#cce7ff,#eaf6ff);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:9999;
-}
+    img {
+        max-width: 80%;
+        max-height: 60vh;
+        object-fit: contain;
+        border-radius: 20px;
+        box-shadow: 0 0 20px rgba(255,255,255,0.4);
+        display: none;
+        margin-top: 40px;
+    }
 
-#start button{
-    font-size:1.6em;
-    padding:20px 40px;
-    border:none;
-    border-radius:50px;
-    background:#d40000;
-    color:white;
-    cursor:pointer;
-    animation:pulse 1.5s infinite;
-}
+    #mensagem {
+        margin-top: 20px;
+        font-size: 18px;
+        max-width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
-@keyframes pulse{
-    0%{transform:scale(1);}
-    50%{transform:scale(1.1);}
-    100%{transform:scale(1);}
-}
+    #botao {
+        margin-top: 25px;
+        padding: 12px 25px;
+        font-size: 18px;
+        border: none;
+        border-radius: 30px;
+        background: crimson;
+        color: white;
+        cursor: pointer;
+        display: none;
+    }
 
-#mensagem{
-    padding:60px 20px;
-    font-size:1.6em;
-}
+    /* Neve */
+    .snowflake {
+        position: fixed;
+        top: -10px;
+        color: white;
+        font-size: 14px;
+        user-select: none;
+        animation: fall linear infinite;
+    }
 
-#slideshow,#coracao,#botao,#natal{
-    display:none;
-}
+    @keyframes fall {
+        to {
+            transform: translateY(110vh);
+        }
+    }
 
-img{
-    max-width:90vw;
-    max-height:85vh;
-    object-fit:contain;
-    border-radius:20px;
-    box-shadow:0 6px 15px rgba(0,0,0,0.3);
-}
-
-.fade{
-    animation:fadeZoom 2.5s;
-}
-
-@keyframes fadeZoom{
-    from{opacity:0; transform:scale(1.05);}
-    to{opacity:1; transform:scale(1);}
-}
-
-canvas{
-    display:block;
-    margin:20px auto;
-}
-
-#botao button{
-    font-size:1.4em;
-    padding:15px 30px;
-    border:none;
-    border-radius:40px;
-    background:#d40000;
-    color:white;
-    cursor:pointer;
-}
+    #equacao {
+        font-size: 22px;
+        margin-top: 15px;
+        color: #ffb6c1;
+    }
 </style>
 </head>
 
 <body>
 
-<!-- 💖 BOTÃO INICIAL -->
-<div id="start">
-    <button onclick="iniciarSite()">💖 Clique aqui ❤️</button>
-</div>
-
-<!-- 🎵 MÚSICA -->
-<audio id="musica" loop>
-    <source src="perfect.mp3" type="audio/mpeg">
+<audio id="musica" autoplay loop>
+    <source src="musica.mp3" type="audio/mpeg">
 </audio>
 
-<!-- 💌 MENSAGEM -->
-<div id="mensagem">
-    💙 Karine Seixas 💙<br><br>
-    Desde que você entrou na minha vida, tudo ganhou mais cor,
-    mais sentido e mais amor ✨<br><br>
-    Obrigado por você me incentivar a ser uma pessoa
-    cada vez melhor 💕<br><br>
-    Cada momento com você é simplesmente perfeito ❤️
-</div>
+<div id="container">
+    <h1>Feliz Natal, Karine Seixas ❤️</h1>
 
-<!-- 📸 SLIDESHOW -->
-<div id="slideshow">
-    <img id="slide">
-</div>
+    <img id="foto">
 
-<!-- ❤️ CORAÇÃO -->
-<div id="coracao">
-    <canvas id="canvas" width="400" height="400"></canvas>
-</div>
+    <div id="mensagem"></div>
+    <div id="equacao"></div>
 
-<!-- 🎄 BOTÃO -->
-<div id="botao">
-    <button onclick="mostrarNatal()">🎄 Feliz Natal meu amor ❤️ 🎄</button>
-</div>
-
-<!-- 🎁 FOTO FINAL -->
-<div id="natal">
-    <img src="fotoNatal.png" class="fade">
+    <button id="botao">Clique aqui ❤️</button>
 </div>
 
 <script>
-/* ❄️ NEVE */
-function criarNeve(){
-    const snow=document.createElement("div");
-    snow.className="snowflake";
-    snow.innerHTML="❄";
-    snow.style.left=Math.random()*100+"vw";
-    snow.style.fontSize=(Math.random()*10+10)+"px";
-    snow.style.animationDuration=(Math.random()*5+5)+"s";
-    document.body.appendChild(snow);
-    setTimeout(()=>snow.remove(),10000);
-}
-setInterval(criarNeve,200);
+    const fotos = [
+        "foto1.jpg",
+        "foto2.jpg",
+        "foto3.jpg",
+        "foto4.jpg",
+        "foto5.jpg"
+    ];
 
-/* 🎵 INICIAR SITE */
-function iniciarSite(){
-    document.getElementById("start").style.display="none";
-    document.getElementById("musica").play();
-    setTimeout(iniciarSlideshow,6000);
-}
+    const mensagens = [
+        "Nosso amor é como a soldagem FSW na liga de alumínio 5052-H34: não precisa de fusão para ser forte, acontece no estado sólido, com controle, cuidado e equilíbrio. 💙",
 
-/* 📸 SLIDESHOW */
-const fotos=["foto1.png","foto2.png","foto3.png","foto4.png","foto5.png"];
-let i=0;
+        "Você é a ferramenta que, com rotação e avanço perfeitos, transformou duas partes independentes em uma única estrutura resistente, estável e cheia de significado.",
 
-function iniciarSlideshow(){
-    mensagem.style.display="none";
-    slideshow.style.display="block";
-    mostrarFoto();
+        "Assim como o FSW preserva as propriedades do material e evita defeitos, você preserva o melhor de mim e fortalece tudo o que toca. Nosso vínculo tem baixa tensão residual, alta durabilidade e um fator de segurança infinito.",
 
-    const intervalo=setInterval(()=>{
-        i++;
-        if(i < fotos.length){
+        "Te amo como um projeto bem dimensionado: pensado nos mínimos detalhes, feito para durar e resistir a qualquer carregamento da vida. ❤️"
+    ];
+
+    const foto = document.getElementById("foto");
+    const mensagem = document.getElementById("mensagem");
+    const botao = document.getElementById("botao");
+    const equacao = document.getElementById("equacao");
+
+    let indice = 0;
+
+    function mostrarFoto() {
+        foto.style.display = "none";
+
+        setTimeout(() => {
+            foto.src = fotos[indice];
+            foto.style.display = "block";
+
+            mensagem.innerText = mensagens[indice] || "";
+            equacao.innerHTML = indice === 3 ? "❤️ = √(amor² + cuidado² + respeito²)" : "";
+
+            if (indice === 4) {
+                botao.style.display = "none";
+            }
+
+        }, 500);
+    }
+
+    botao.onclick = () => {
+        indice++;
+        if (indice < fotos.length) {
             mostrarFoto();
-        }else{
-            clearInterval(intervalo);
-            setTimeout(finalizar,4000);
         }
-    },3500);
-}
+    };
 
-function mostrarFoto(){
-    slide.classList.remove("fade");
-    void slide.offsetWidth;
-    slide.src=fotos[i];
-    slide.classList.add("fade");
-}
+    // Início
+    setTimeout(() => {
+        mostrarFoto();
+        botao.style.display = "inline-block";
+    }, 6000);
 
-/* ❤️ CORAÇÃO */
-function finalizar(){
-    slideshow.style.display="none";
-    coracao.style.display="block";
-    desenharCoracao();
-    setTimeout(()=>botao.style.display="block",3500);
-}
+    // Neve
+    function criarNeve() {
+        const snow = document.createElement("div");
+        snow.className = "snowflake";
+        snow.innerHTML = "❄";
+        snow.style.left = Math.random() * window.innerWidth + "px";
+        snow.style.animationDuration = (3 + Math.random() * 5) + "s";
+        snow.style.opacity = Math.random();
+        document.body.appendChild(snow);
 
-function desenharCoracao(){
-    const c=canvas.getContext("2d");
-    c.translate(200,200);
-    c.scale(10,-10);
-    c.beginPath();
-    let t=0;
+        setTimeout(() => snow.remove(), 8000);
+    }
 
-    const anim=setInterval(()=>{
-        const x=16*Math.pow(Math.sin(t),3);
-        const y=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
-        c.lineTo(x,y);
-        c.strokeStyle="#d40000";
-        c.lineWidth=0.3;
-        c.stroke();
-        t+=0.02;
-        if(t>Math.PI*2){
-            clearInterval(anim);
-            c.setTransform(1,0,0,1,0,0);
-            c.fillStyle="#d40000";
-            c.font="22px Arial";
-            c.textAlign="center";
-            c.fillText("Juan ❤️ Karine",200,220);
-        }
-    },20);
-}
-
-/* 🎁 FOTO FINAL */
-function mostrarNatal(){
-    botao.style.display="none";
-    coracao.style.display="none";
-    natal.style.display="block";
-}
+    setInterval(criarNeve, 200);
 </script>
 
 </body>
 </html>
+
 
