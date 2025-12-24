@@ -11,6 +11,24 @@ body{
     font-family:Arial, sans-serif;
     background:linear-gradient(135deg,#cce7ff,#eaf6ff);
     text-align:center;
+    overflow-x:hidden;
+}
+
+/* ❄️ NEVE */
+.snowflake{
+    position:fixed;
+    top:-10px;
+    color:white;
+    font-size:1em;
+    user-select:none;
+    pointer-events:none;
+    animation:fall linear infinite;
+}
+
+@keyframes fall{
+    to{
+        transform:translateY(110vh);
+    }
 }
 
 #mensagem{
@@ -58,10 +76,12 @@ canvas{
 
 <body onclick="ativarMusica()">
 
+<!-- 🎵 MÚSICA -->
 <audio id="musica" loop>
     <source src="perfect.mp3" type="audio/mpeg">
 </audio>
 
+<!-- 💌 MENSAGEM -->
 <div id="mensagem">
     💙 Karine Seixas 💙<br><br>
     Desde que você entrou na minha vida, tudo ganhou mais cor,
@@ -71,111 +91,119 @@ canvas{
     Cada momento com você é simplesmente perfeito 🎶
 </div>
 
+<!-- 📸 SLIDESHOW -->
 <div id="slideshow">
     <img id="slide">
 </div>
 
+<!-- ❤️ CORAÇÃO -->
 <div id="coracao">
     <canvas id="canvas" width="400" height="400"></canvas>
 </div>
 
+<!-- 🎄 BOTÃO -->
 <div id="botao">
     <button onclick="mostrarNatal()">🎄 Feliz Natal 🎄</button>
 </div>
 
+<!-- 🎁 FOTO FINAL -->
 <div id="natal">
     <img src="fotoNatal.png" class="fade">
 </div>
 
 <script>
-const fotos = [
-    "foto1.png",
-    "foto2.png",
-    "foto3.png",
-    "foto4.png",
-    "foto5.png"
-];
+/* ❄️ NEVE */
+function criarNeve(){
+    const snow=document.createElement("div");
+    snow.className="snowflake";
+    snow.innerHTML="❄";
+    snow.style.left=Math.random()*100+"vw";
+    snow.style.fontSize=(Math.random()*10+10)+"px";
+    snow.style.animationDuration=(Math.random()*5+5)+"s";
+    document.body.appendChild(snow);
+    setTimeout(()=>snow.remove(),10000);
+}
+setInterval(criarNeve,200);
 
-let i = 0;
-let musicaIniciada = false;
-
+/* 🎵 MÚSICA */
+let musicaIniciada=false;
 function ativarMusica(){
     if(!musicaIniciada){
         document.getElementById("musica").play();
-        musicaIniciada = true;
+        musicaIniciada=true;
     }
 }
 
-setTimeout(iniciarSlideshow, 6000);
+/* 📸 FOTOS */
+const fotos=["foto1.png","foto2.png","foto3.png","foto4.png","foto5.png"];
+let i=0;
+
+setTimeout(iniciarSlideshow,6000);
 
 function iniciarSlideshow(){
-    mensagem.style.display = "none";
-    slideshow.style.display = "block";
+    mensagem.style.display="none";
+    slideshow.style.display="block";
     trocarFoto();
 
-    const intervalo = setInterval(() => {
+    const intervalo=setInterval(()=>{
         i++;
-        if(i < fotos.length){
+        if(i<fotos.length){
             trocarFoto();
-        } else {
+        }else{
             clearInterval(intervalo);
-            setTimeout(mostrarUltimaSozinha, 3500);
+            setTimeout(finalizar,4000);
         }
-    }, 3500);
+    },3500);
 }
 
 function trocarFoto(){
     slide.classList.remove("fade");
     void slide.offsetWidth;
-    slide.src = fotos[i];
+    slide.src=fotos[i];
     slide.classList.add("fade");
 }
 
-function mostrarUltimaSozinha(){
-    slide.src = fotos[fotos.length - 1];
-    setTimeout(finalizar, 4000);
-}
-
+/* ❤️ CORAÇÃO */
 function finalizar(){
-    slideshow.style.display = "none";
-    coracao.style.display = "block";
+    slideshow.style.display="none";
+    coracao.style.display="block";
     desenharCoracao();
-    setTimeout(() => botao.style.display = "block", 3500);
+    setTimeout(()=>botao.style.display="block",3500);
 }
 
 function desenharCoracao(){
-    const c = canvas.getContext("2d");
+    const c=canvas.getContext("2d");
     c.translate(200,200);
     c.scale(10,-10);
     c.beginPath();
+    let t=0;
 
-    let t = 0;
-    const anim = setInterval(() => {
-        const x = 16*Math.pow(Math.sin(t),3);
-        const y = 13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
+    const anim=setInterval(()=>{
+        const x=16*Math.pow(Math.sin(t),3);
+        const y=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
         c.lineTo(x,y);
-        c.strokeStyle = "#d40000";
-        c.lineWidth = 0.3;
+        c.strokeStyle="#d40000";
+        c.lineWidth=0.3;
         c.stroke();
-        t += 0.02;
-        if(t > Math.PI*2){
+        t+=0.02;
+        if(t>Math.PI*2){
             clearInterval(anim);
             c.setTransform(1,0,0,1,0,0);
-            c.fillStyle = "#d40000";
-            c.font = "22px Arial";
-            c.textAlign = "center";
-            c.fillText("Juan ❤️ Karine", 200, 220);
+            c.fillStyle="#d40000";
+            c.font="22px Arial";
+            c.textAlign="center";
+            c.fillText("Juan ❤️ Karine",200,220);
         }
     },20);
 }
 
+/* 🎁 FOTO FINAL */
 function mostrarNatal(){
-    botao.style.display = "none";
-    coracao.style.display = "none";
-    natal.style.display = "block";
+    botao.style.display="none";
+    coracao.style.display="none";
+    natal.style.display="block";
 }
 </script>
 
 </body>
 </html>
-
