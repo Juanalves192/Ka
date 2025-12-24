@@ -54,10 +54,21 @@ body{
     100%{transform:scale(1);}
 }
 
-/* 📸 SLIDESHOW */
+/* 💌 MENSAGENS DE TEXTO */
+#texto{
+    display:none;
+    font-size:1.7em;
+    max-width:80%;
+    margin:25vh auto;
+    background:rgba(255,255,255,0.75);
+    padding:30px;
+    border-radius:25px;
+    color:#003366;
+}
+
+/* 📸 SLIDES */
 #slideshow{
     display:none;
-    position:relative;
 }
 img{
     max-width:90vw;
@@ -72,20 +83,6 @@ img{
 @keyframes fadeZoom{
     from{opacity:0; transform:scale(1.05);}
     to{opacity:1; transform:scale(1);}
-}
-
-/* 📝 MENSAGEM CENTRAL */
-#mensagemFoto{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    font-size:1.6em;
-    max-width:80%;
-    background:rgba(255,255,255,0.75);
-    padding:25px;
-    border-radius:20px;
-    color:#003366;
 }
 
 /* ❤️ CORAÇÃO */
@@ -127,19 +124,35 @@ canvas{
 
 <body>
 
+<!-- START -->
 <div id="start">
     <button onclick="iniciarSite()">💖 Clique aqui ❤️</button>
 </div>
 
+<!-- MÚSICA -->
 <audio id="musica" loop>
     <source src="perfect.mp3" type="audio/mpeg">
 </audio>
 
-<div id="slideshow">
-    <img id="slide">
-    <div id="mensagemFoto"></div>
+<!-- MENSAGEM INICIAL (INALTERADA) -->
+<div id="mensagem">
+    💙 Karine Seixas 💙<br><br>
+    Desde que você entrou na minha vida, tudo ganhou mais cor,
+    mais sentido e mais amor ✨<br><br>
+    Obrigado por você me incentivar a ser uma pessoa
+    cada vez melhor 💕<br><br>
+    Cada momento com você é simplesmente perfeito ❤️
 </div>
 
+<!-- TEXTO FSW -->
+<div id="texto"></div>
+
+<!-- SLIDES -->
+<div id="slideshow">
+    <img id="slide">
+</div>
+
+<!-- CORAÇÃO -->
 <div id="coracao">
     <div id="equacao">
         x = 16 sen³(t)<br>
@@ -169,36 +182,57 @@ setInterval(()=>{
     setTimeout(()=>snow.remove(),10000);
 },200);
 
-/* 🎵 START */
+/* INICIAR */
 function iniciarSite(){
     start.style.display="none";
     musica.play();
-    iniciarSlideshow();
+    setTimeout(iniciarTextos,4000);
 }
 
-/* 📸 SLIDES */
-const fotos=["foto1.png","foto2.png","foto3.png","foto4.png"];
-const mensagens=[
+/* TEXTOS FSW */
+const textos=[
 "Nosso amor é como a soldagem FSW na liga de alumínio 5052-H34: não precisa de fusão para ser forte, acontece no estado sólido, com controle, cuidado e equilíbrio. 💙",
 "Você é a ferramenta que, com rotação e avanço perfeitos, transformou duas partes independentes em uma única estrutura resistente, estável e cheia de significado.",
 "Assim como o FSW preserva as propriedades do material e evita defeitos, você preserva o melhor de mim e fortalece tudo o que toca. Nosso vínculo tem baixa tensão residual, alta durabilidade e um fator de segurança infinito.",
 "Te amo como um projeto bem dimensionado: pensado nos mínimos detalhes, feito para durar e resistir a qualquer carregamento da vida. ❤️"
 ];
 
+let t=0;
+
+function iniciarTextos(){
+    mensagem.style.display="none";
+    texto.style.display="block";
+    texto.innerHTML=textos[t];
+
+    const intervalo=setInterval(()=>{
+        t++;
+        if(t<textos.length){
+            texto.innerHTML=textos[t];
+        }else{
+            clearInterval(intervalo);
+            texto.style.display="none";
+            iniciarSlideshow();
+        }
+    },10000); // 10 segundos
+}
+
+/* SLIDES */
+const fotos=["foto1.png","foto2.png","foto3.png","foto4.png"];
 let i=0;
 
 function iniciarSlideshow(){
     slideshow.style.display="block";
     mostrarFoto();
+
     const intervalo=setInterval(()=>{
         i++;
         if(i<fotos.length){
             mostrarFoto();
         }else{
             clearInterval(intervalo);
-            setTimeout(finalizar,2000);
+            setTimeout(finalizar,3000);
         }
-    },10000); // ⏱️ 10 segundos
+    },6000);
 }
 
 function mostrarFoto(){
@@ -206,10 +240,9 @@ function mostrarFoto(){
     void slide.offsetWidth;
     slide.src=fotos[i];
     slide.classList.add("fade");
-    mensagemFoto.innerHTML=mensagens[i];
 }
 
-/* ❤️ CORAÇÃO */
+/* CORAÇÃO */
 function finalizar(){
     slideshow.style.display="none";
     coracao.style.display="block";
@@ -223,19 +256,19 @@ function desenharCoracaoAnimado(){
     c.clearRect(0,0,400,400);
     c.translate(200,200);
     c.scale(10,-10);
-    let t=0;
+    let a=0;
     c.beginPath();
 
     const anim=setInterval(()=>{
-        const x=16*Math.pow(Math.sin(t),3);
-        const y=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
+        const x=16*Math.pow(Math.sin(a),3);
+        const y=13*Math.cos(a)-5*Math.cos(2*a)-2*Math.cos(3*a)-Math.cos(4*a);
         c.lineTo(x,y);
-        c.strokeStyle='#d40000'; // ❤️ vermelho
+        c.strokeStyle='#d40000';
         c.lineWidth=0.3;
         c.stroke();
-        t+=0.02;
+        a+=0.02;
 
-        if(t>Math.PI*2){
+        if(a>Math.PI*2){
             clearInterval(anim);
             c.setTransform(1,0,0,1,0,0);
             c.fillStyle="#d40000";
@@ -246,7 +279,7 @@ function desenharCoracaoAnimado(){
     },20);
 }
 
-/* 🎄 FINAL */
+/* FINAL */
 function mostrarNatal(){
     botao.style.display="none";
     coracao.style.display="none";
@@ -256,7 +289,6 @@ function mostrarNatal(){
 
 </body>
 </html>
-
 
 
 
