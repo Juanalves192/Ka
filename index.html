@@ -11,7 +11,6 @@ body{
     font-family:Arial, sans-serif;
     background:linear-gradient(135deg,#cce7ff,#eaf6ff);
     text-align:center;
-    overflow:hidden;
 }
 
 #mensagem{
@@ -23,13 +22,15 @@ body{
     display:none;
 }
 
-#slideshow img,
-#natal img{
-    width:80vw;
-    height:80vh;
+img{
+    max-width:90vw;
+    max-height:85vh;
     object-fit:contain;
     border-radius:20px;
     box-shadow:0 6px 15px rgba(0,0,0,0.3);
+}
+
+.fade{
     animation:fadeZoom 2.5s;
 }
 
@@ -55,28 +56,26 @@ canvas{
 </style>
 </head>
 
-<body>
+<body onclick="ativarMusica()">
 
 <!-- MÚSICA -->
-<audio id="musica" autoplay loop muted>
+<audio id="musica" loop>
     <source src="perfect.mp3" type="audio/mpeg">
 </audio>
 
 <!-- MENSAGEM -->
 <div id="mensagem">
-    <p>
-        💙 Karine Seixas 💙<br><br>
-        Desde que você entrou na minha vida, tudo ganhou mais cor,
-        mais sentido e mais amor ✨<br><br>
-        Obrigado por você me incentivar a ser uma pessoa
-        cada vez melhor 💕<br><br>
-        Cada momento com você é simplesmente perfeito 🎶
-    </p>
+    💙 Karine Seixas 💙<br><br>
+    Desde que você entrou na minha vida, tudo ganhou mais cor,
+    mais sentido e mais amor ✨<br><br>
+    Obrigado por você me incentivar a ser uma pessoa
+    cada vez melhor 💕<br><br>
+    Cada momento com você é simplesmente perfeito 🎶
 </div>
 
 <!-- SLIDESHOW -->
 <div id="slideshow">
-    <img id="slide" src="">
+    <img id="slide">
 </div>
 
 <!-- CORAÇÃO -->
@@ -91,7 +90,7 @@ canvas{
 
 <!-- FOTO FINAL -->
 <div id="natal">
-    <img src="fotoNatal.png">
+    <img src="fotoNatal.png" class="fade">
 </div>
 
 <script>
@@ -104,13 +103,16 @@ const fotos = [
 ];
 
 let i = 0;
-const musica = document.getElementById("musica");
-const slide = document.getElementById("slide");
+let musicaIniciada = false;
 
-window.onload = () => {
-    musica.muted = false;
-    setTimeout(iniciarSlideshow, 6000);
-};
+function ativarMusica(){
+    if(!musicaIniciada){
+        document.getElementById("musica").play();
+        musicaIniciada = true;
+    }
+}
+
+setTimeout(iniciarSlideshow, 6000);
 
 function iniciarSlideshow(){
     mensagem.style.display = "none";
@@ -129,10 +131,10 @@ function iniciarSlideshow(){
 }
 
 function trocarFoto(){
-    slide.style.animation = "none";
-    slide.offsetHeight;
+    slide.classList.remove("fade");
+    void slide.offsetWidth;
     slide.src = fotos[i];
-    slide.style.animation = "fadeZoom 2.5s";
+    slide.classList.add("fade");
 }
 
 function finalizar(){
@@ -177,4 +179,5 @@ function mostrarNatal(){
 
 </body>
 </html>
+
 
