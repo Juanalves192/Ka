@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Para Karine ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body{
     margin:0;
@@ -12,43 +13,52 @@ body{
     text-align:center;
     overflow:hidden;
 }
+
 #mensagem{
     padding:60px 20px;
     font-size:1.6em;
 }
-#slideshow,#coracao,#botao,#fotoNatal{
+
+#slideshow,#coracao,#botao,#natal{
     display:none;
 }
-#slideshow img{
-    max-width:80vw;
-    max-height:80vh;
+
+#slideshow img,
+#natal img{
+    width:80vw;
+    height:80vh;
+    object-fit:contain;
     border-radius:20px;
     box-shadow:0 6px 15px rgba(0,0,0,0.3);
-    animation:fadeZoom 3s ease-in-out;
+    animation:fadeZoom 2.5s;
 }
+
 @keyframes fadeZoom{
-    from{opacity:0; transform:scale(1.05)}
-    to{opacity:1; transform:scale(1)}
+    from{opacity:0; transform:scale(1.05);}
+    to{opacity:1; transform:scale(1);}
 }
+
 canvas{
     display:block;
     margin:20px auto;
 }
+
 #botao button{
     font-size:1.4em;
-    padding:15px 35px;
+    padding:15px 30px;
     border:none;
     border-radius:40px;
-    background:#1e90ff;
+    background:#d40000;
     color:white;
     cursor:pointer;
 }
 </style>
 </head>
+
 <body>
 
 <!-- MÚSICA -->
-<audio id="musica" autoplay muted loop>
+<audio id="musica" autoplay loop muted>
     <source src="perfect.mp3" type="audio/mpeg">
 </audio>
 
@@ -56,14 +66,17 @@ canvas{
 <div id="mensagem">
     <p>
         💙 Karine Seixas 💙<br><br>
-        Desde que você entrou na minha vida, tudo ganhou mais cor, mais sentido e mais amor ✨<br><br>
-        Obrigado por estar ao meu lado, por acreditar em mim e por você me incentivar a ser uma pessoa cada vez melhor 💕
+        Desde que você entrou na minha vida, tudo ganhou mais cor,
+        mais sentido e mais amor ✨<br><br>
+        Obrigado por você me incentivar a ser uma pessoa
+        cada vez melhor 💕<br><br>
+        Cada momento com você é simplesmente perfeito 🎶
     </p>
 </div>
 
 <!-- SLIDESHOW -->
 <div id="slideshow">
-    <img id="slide" src="foto1.png">
+    <img id="slide" src="">
 </div>
 
 <!-- CORAÇÃO -->
@@ -71,80 +84,97 @@ canvas{
     <canvas id="canvas" width="400" height="400"></canvas>
 </div>
 
-<!-- BOTÃO FINAL -->
+<!-- BOTÃO -->
 <div id="botao">
-    <button onclick="mostrarFotoNatal()">🎄 Feliz Natal</button>
+    <button onclick="mostrarNatal()">🎄 Feliz Natal 🎄</button>
 </div>
 
 <!-- FOTO FINAL -->
-<div id="fotoNatal">
-    <img src="fotoNatal.png" style="max-width:80vw;border-radius:20px;box-shadow:0 6px 15px rgba(0,0,0,0.3);">
+<div id="natal">
+    <img src="fotoNatal.png">
 </div>
 
 <script>
-const fotos = ["foto1.png","foto2.png","foto3.png","foto4.png","foto5.png"];
-let i=0;
+const fotos = [
+    "foto1.png",
+    "foto2.png",
+    "foto3.png",
+    "foto4.png",
+    "foto5.png"
+];
 
-// liberar música após carregamento
+let i = 0;
+const musica = document.getElementById("musica");
+const slide = document.getElementById("slide");
+
 window.onload = () => {
-    const musica = document.getElementById('musica');
     musica.muted = false;
-    musica.volume = 0.8;
-    musica.play();
+    setTimeout(iniciarSlideshow, 6000);
 };
 
-setTimeout(iniciarSlideshow,6000);
-
 function iniciarSlideshow(){
-    mensagem.style.display='none';
-    slideshow.style.display='block';
-    const intervalo=setInterval(()=>{
-        slide.src=fotos[i];
+    mensagem.style.display = "none";
+    slideshow.style.display = "block";
+
+    trocarFoto();
+    const intervalo = setInterval(() => {
         i++;
-        if(i>=fotos.length){
+        if(i >= fotos.length){
             clearInterval(intervalo);
-            setTimeout(finalizar,2500);
+            setTimeout(finalizar, 2500);
+            return;
         }
-    },3500);
+        trocarFoto();
+    }, 3500);
+}
+
+function trocarFoto(){
+    slide.style.animation = "none";
+    slide.offsetHeight;
+    slide.src = fotos[i];
+    slide.style.animation = "fadeZoom 2.5s";
 }
 
 function finalizar(){
-    slideshow.style.display='none';
-    coracao.style.display='block';
-    desenharCoracaoAnimado();
-    setTimeout(()=>botao.style.display='block',4000);
+    slideshow.style.display = "none";
+    coracao.style.display = "block";
+    desenharCoracao();
+    setTimeout(() => botao.style.display = "block", 3500);
 }
 
-function desenharCoracaoAnimado(){
-    const c=canvas.getContext('2d');
-    c.clearRect(-200,-200,400,400);
+function desenharCoracao(){
+    const c = canvas.getContext("2d");
     c.translate(200,200);
     c.scale(10,-10);
-    let t=0;
     c.beginPath();
-    const anim=setInterval(()=>{
-        const x=16*Math.pow(Math.sin(t),3);
-        const y=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
+
+    let t = 0;
+    const anim = setInterval(() => {
+        const x = 16*Math.pow(Math.sin(t),3);
+        const y = 13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
         c.lineTo(x,y);
-        c.strokeStyle='#1e90ff';
-        c.lineWidth=0.3;
+        c.strokeStyle = "#d40000";
+        c.lineWidth = 0.3;
         c.stroke();
-        t+=0.02;
-        if(t>Math.PI*2){
+        t += 0.02;
+        if(t > Math.PI*2){
             clearInterval(anim);
-            c.scale(0.1,-0.1);
-            c.fillStyle='#1e90ff';
-            c.font='20px Arial';
-            c.fillText('Juan ❤️ Karine', -60, 0);
+            c.setTransform(1,0,0,1,0,0);
+            c.fillStyle = "#d40000";
+            c.font = "22px Arial";
+            c.textAlign = "center";
+            c.fillText("Juan ❤️ Karine", 200, 220);
         }
     },20);
 }
 
-function mostrarFotoNatal(){
-    botao.style.display='none';
-    fotoNatal.style.display='block';
+function mostrarNatal(){
+    botao.style.display = "none";
+    coracao.style.display = "none";
+    natal.style.display = "block";
 }
 </script>
 
 </body>
 </html>
+
