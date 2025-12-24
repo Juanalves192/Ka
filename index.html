@@ -19,24 +19,21 @@ body{
     position:fixed;
     top:-10px;
     color:white;
-    font-size:1em;
-    user-select:none;
-    pointer-events:none;
     animation:fall linear infinite;
 }
 @keyframes fall{
     to{ transform:translateY(110vh); }
 }
 
-/* 💖 START */
+/* START */
 #start{
     position:fixed;
     inset:0;
-    background:linear-gradient(135deg,#cce7ff,#eaf6ff);
     display:flex;
-    align-items:center;
     justify-content:center;
-    z-index:9999;
+    align-items:center;
+    background:linear-gradient(135deg,#cce7ff,#eaf6ff);
+    z-index:999;
 }
 #start button{
     font-size:1.6em;
@@ -46,46 +43,32 @@ body{
     background:#d40000;
     color:white;
     cursor:pointer;
-    animation:pulse 1.5s infinite;
-}
-@keyframes pulse{
-    0%{transform:scale(1);}
-    50%{transform:scale(1.1);}
-    100%{transform:scale(1);}
 }
 
-/* 💌 MENSAGENS DE TEXTO */
+/* TEXTO */
 #texto{
     display:none;
-    font-size:1.7em;
     max-width:80%;
     margin:25vh auto;
+    font-size:1.7em;
     background:rgba(255,255,255,0.75);
     padding:30px;
     border-radius:25px;
     color:#003366;
 }
 
-/* 📸 SLIDES */
-#slideshow{
+/* FOTO */
+#foto{
     display:none;
 }
 img{
     max-width:90vw;
     max-height:85vh;
-    object-fit:contain;
     border-radius:20px;
     box-shadow:0 6px 15px rgba(0,0,0,0.3);
 }
-.fade{
-    animation:fadeZoom 2.5s;
-}
-@keyframes fadeZoom{
-    from{opacity:0; transform:scale(1.05);}
-    to{opacity:1; transform:scale(1);}
-}
 
-/* ❤️ CORAÇÃO */
+/* CORAÇÃO */
 #coracao{
     display:none;
 }
@@ -95,15 +78,10 @@ img{
     color:#d40000;
     margin-bottom:10px;
 }
-canvas{
-    display:block;
-    margin:0 auto;
-}
 
-/* 🎄 BOTÃO */
+/* BOTÃO */
 #botao{
     display:none;
-    margin-top:20px;
 }
 #botao button{
     font-size:1.4em;
@@ -115,7 +93,6 @@ canvas{
     cursor:pointer;
 }
 
-/* 🎁 FINAL */
 #natal{
     display:none;
 }
@@ -124,35 +101,29 @@ canvas{
 
 <body>
 
-<!-- START -->
 <div id="start">
-    <button onclick="iniciarSite()">💖 Clique aqui ❤️</button>
+    <button onclick="iniciar()">💖 Clique aqui ❤️</button>
 </div>
 
-<!-- MÚSICA -->
 <audio id="musica" loop>
     <source src="perfect.mp3" type="audio/mpeg">
 </audio>
 
-<!-- MENSAGEM INICIAL (INALTERADA) -->
 <div id="mensagem">
     💙 Karine Seixas 💙<br><br>
     Desde que você entrou na minha vida, tudo ganhou mais cor,
     mais sentido e mais amor ✨<br><br>
     Obrigado por você me incentivar a ser uma pessoa
     cada vez melhor 💕<br><br>
-    Cada momento com você é simplesmente perfeito ❤️
+    Cada momento com você é simplesmente perfeito 🎶
 </div>
 
-<!-- TEXTO FSW -->
 <div id="texto"></div>
 
-<!-- SLIDES -->
-<div id="slideshow">
-    <img id="slide">
+<div id="foto">
+    <img id="img">
 </div>
 
-<!-- CORAÇÃO -->
 <div id="coracao">
     <div id="equacao">
         x = 16 sen³(t)<br>
@@ -166,120 +137,101 @@ canvas{
 </div>
 
 <div id="natal">
-    <img src="fotoNatal.png" class="fade">
+    <img src="fotoNatal.png">
 </div>
 
 <script>
-/* ❄️ NEVE */
 setInterval(()=>{
-    const snow=document.createElement("div");
-    snow.className="snowflake";
-    snow.innerHTML="❄";
-    snow.style.left=Math.random()*100+"vw";
-    snow.style.fontSize=(Math.random()*10+10)+"px";
-    snow.style.animationDuration=(Math.random()*5+5)+"s";
-    document.body.appendChild(snow);
-    setTimeout(()=>snow.remove(),10000);
-},200);
+    const s=document.createElement("div");
+    s.className="snowflake";
+    s.innerHTML="❄";
+    s.style.left=Math.random()*100+"vw";
+    s.style.fontSize=(Math.random()*10+10)+"px";
+    s.style.animationDuration=(Math.random()*5+5)+"s";
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),10000);
+},300);
 
-/* INICIAR */
-function iniciarSite(){
-    start.style.display="none";
-    musica.play();
-    setTimeout(iniciarTextos,4000);
-}
-
-/* TEXTOS FSW */
-const textos=[
+const mensagens=[
 "Nosso amor é como a soldagem FSW na liga de alumínio 5052-H34: não precisa de fusão para ser forte, acontece no estado sólido, com controle, cuidado e equilíbrio. 💙",
 "Você é a ferramenta que, com rotação e avanço perfeitos, transformou duas partes independentes em uma única estrutura resistente, estável e cheia de significado.",
 "Assim como o FSW preserva as propriedades do material e evita defeitos, você preserva o melhor de mim e fortalece tudo o que toca. Nosso vínculo tem baixa tensão residual, alta durabilidade e um fator de segurança infinito.",
 "Te amo como um projeto bem dimensionado: pensado nos mínimos detalhes, feito para durar e resistir a qualquer carregamento da vida. ❤️"
 ];
 
-let t=0;
-
-function iniciarTextos(){
-    mensagem.style.display="none";
-    texto.style.display="block";
-    texto.innerHTML=textos[t];
-
-    const intervalo=setInterval(()=>{
-        t++;
-        if(t<textos.length){
-            texto.innerHTML=textos[t];
-        }else{
-            clearInterval(intervalo);
-            texto.style.display="none";
-            iniciarSlideshow();
-        }
-    },10000); // 10 segundos
-}
-
-/* SLIDES */
 const fotos=["foto1.png","foto2.png","foto3.png","foto4.png"];
+
 let i=0;
 
-function iniciarSlideshow(){
-    slideshow.style.display="block";
-    mostrarFoto();
+function iniciar(){
+    start.style.display="none";
+    musica.play();
+    setTimeout(iniciarSequencia,4000);
+}
 
-    const intervalo=setInterval(()=>{
-        i++;
-        if(i<fotos.length){
-            mostrarFoto();
-        }else{
-            clearInterval(intervalo);
-            setTimeout(finalizar,3000);
-        }
-    },6000);
+function iniciarSequencia(){
+    mensagem.style.display="none";
+    mostrarMensagem();
+}
+
+function mostrarMensagem(){
+    texto.style.display="block";
+    foto.style.display="none";
+    texto.innerHTML=mensagens[i];
+
+    setTimeout(mostrarFoto,10000);
 }
 
 function mostrarFoto(){
-    slide.classList.remove("fade");
-    void slide.offsetWidth;
-    slide.src=fotos[i];
-    slide.classList.add("fade");
+    texto.style.display="none";
+    foto.style.display="block";
+    img.src=fotos[i];
+
+    setTimeout(()=>{
+        i++;
+        if(i<mensagens.length){
+            mostrarMensagem();
+        }else{
+            finalizar();
+        }
+    },10000);
 }
 
-/* CORAÇÃO */
 function finalizar(){
-    slideshow.style.display="none";
+    texto.style.display="none";
+    foto.style.display="none";
     coracao.style.display="block";
-    desenharCoracaoAnimado();
+    desenharCoracao();
     setTimeout(()=>botao.style.display="block",3500);
 }
 
-function desenharCoracaoAnimado(){
-    const c=canvas.getContext('2d');
-    c.setTransform(1,0,0,1,0,0);
-    c.clearRect(0,0,400,400);
+function desenharCoracao(){
+    const c=canvas.getContext("2d");
     c.translate(200,200);
     c.scale(10,-10);
-    let a=0;
+    let t=0;
     c.beginPath();
 
     const anim=setInterval(()=>{
-        const x=16*Math.pow(Math.sin(a),3);
-        const y=13*Math.cos(a)-5*Math.cos(2*a)-2*Math.cos(3*a)-Math.cos(4*a);
+        const x=16*Math.pow(Math.sin(t),3);
+        const y=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
         c.lineTo(x,y);
-        c.strokeStyle='#d40000';
+        c.strokeStyle="#d40000";
         c.lineWidth=0.3;
         c.stroke();
-        a+=0.02;
+        t+=0.02;
 
-        if(a>Math.PI*2){
+        if(t>Math.PI*2){
             clearInterval(anim);
             c.setTransform(1,0,0,1,0,0);
-            c.fillStyle="#d40000";
             c.font="22px Arial";
+            c.fillStyle="#d40000";
             c.textAlign="center";
             c.fillText("Juan ❤️ Karine",200,220);
         }
     },20);
 }
 
-/* FINAL */
 function mostrarNatal(){
     botao.style.display="none";
     coracao.style.display="none";
@@ -289,6 +241,7 @@ function mostrarNatal(){
 
 </body>
 </html>
+
 
 
 
