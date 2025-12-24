@@ -58,12 +58,10 @@ canvas{
 
 <body onclick="ativarMusica()">
 
-<!-- MÚSICA -->
 <audio id="musica" loop>
     <source src="perfect.mp3" type="audio/mpeg">
 </audio>
 
-<!-- MENSAGEM -->
 <div id="mensagem">
     💙 Karine Seixas 💙<br><br>
     Desde que você entrou na minha vida, tudo ganhou mais cor,
@@ -73,22 +71,18 @@ canvas{
     Cada momento com você é simplesmente perfeito 🎶
 </div>
 
-<!-- SLIDESHOW -->
 <div id="slideshow">
     <img id="slide">
 </div>
 
-<!-- CORAÇÃO -->
 <div id="coracao">
     <canvas id="canvas" width="400" height="400"></canvas>
 </div>
 
-<!-- BOTÃO -->
 <div id="botao">
     <button onclick="mostrarNatal()">🎄 Feliz Natal 🎄</button>
 </div>
 
-<!-- FOTO FINAL -->
 <div id="natal">
     <img src="fotoNatal.png" class="fade">
 </div>
@@ -117,16 +111,16 @@ setTimeout(iniciarSlideshow, 6000);
 function iniciarSlideshow(){
     mensagem.style.display = "none";
     slideshow.style.display = "block";
-
     trocarFoto();
+
     const intervalo = setInterval(() => {
         i++;
-        if(i >= fotos.length){
+        if(i < fotos.length){
+            trocarFoto();
+        } else {
             clearInterval(intervalo);
-            setTimeout(finalizar, 2500);
-            return;
+            setTimeout(mostrarUltimaSozinha, 3500);
         }
-        trocarFoto();
     }, 3500);
 }
 
@@ -135,6 +129,11 @@ function trocarFoto(){
     void slide.offsetWidth;
     slide.src = fotos[i];
     slide.classList.add("fade");
+}
+
+function mostrarUltimaSozinha(){
+    slide.src = fotos[fotos.length - 1];
+    setTimeout(finalizar, 4000);
 }
 
 function finalizar(){
@@ -179,5 +178,4 @@ function mostrarNatal(){
 
 </body>
 </html>
-
 
